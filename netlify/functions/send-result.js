@@ -4,7 +4,7 @@
 //
 // Environment variables (Site settings → Environment variables) — never committed:
 //   MS_TENANT_ID, MS_CLIENT_ID, MS_CLIENT_SECRET   from your Entra app registration
-//   MS_SENDER        mailbox to send FROM, e.g. douglas@entertrainment.co.uk
+//   MS_SENDER        mailbox to send FROM, e.g. you@example.com
 //   RESULT_TO        (optional) where results go; defaults to MS_SENDER — NEVER taken from the request
 //   ALLOWED_ORIGINS  (optional) comma-separated origins allowed to call this endpoint,
 //                    e.g. "https://your-site.netlify.app". If unset, only same-site calls
@@ -19,7 +19,7 @@
 // be used to spam YOUR mailbox — it is not an open relay. On top of that: origin allow-listing, a
 // small request-size cap, per-IP best-effort rate limiting, a honeypot, and payload validation.
 
-const DEFAULT_TO = "douglas@entertrainment.co.uk";
+const DEFAULT_TO = ["douglas","entertrainment.co.uk"].join("@");  // assembled; override with the RESULT_TO env var
 const MAX_BODY_BYTES = 8 * 1024;         // reject oversized payloads
 const RATE_MAX = 12;                     // max requests
 const RATE_WINDOW_MS = 60 * 1000;        // per minute, per IP (best-effort; resets on cold start)

@@ -33,7 +33,7 @@ A **calibration-free** speech-in-noise screen: three spoken digits over noise, w
 
 Extra references: [1'] Smits et al. 2013, *JASA* (the DiN test); [2'] Smits 2022, *JASA* (1-up/1-down SEM); Van den Borre 2021 (DTT scoping review); Türüdü 2025 (online DiN, mixing-method effects ~1–2 dB, antiphasic vs diotic ~6 dB).
 
-Results (and, for the audiology panel, the full threshold table + tinnitus profile) are shown on screen and emailed to **douglas@entertrainment.co.uk**.
+Results (and, for the audiology panel, the full threshold table + tinnitus profile) are shown on screen and emailed to **you@example.com**.
 
 ---
 
@@ -67,8 +67,8 @@ By default results are delivered via **Netlify Forms** (dashboard notification) 
    - Note the **Directory (tenant) ID** and **Application (client) ID** (both already in your AA app config).
 2. In **Netlify → Site settings → Environment variables**, add:
    - `MS_TENANT_ID`, `MS_CLIENT_ID`, `MS_CLIENT_SECRET`
-   - `MS_SENDER` = `douglas@entertrainment.co.uk` (the mailbox to send from)
-   - `RESULT_TO` = `douglas@entertrainment.co.uk` (optional; defaults to `MS_SENDER`)
+   - `MS_SENDER` = `you@example.com` (the mailbox to send from)
+   - `RESULT_TO` = `you@example.com` (optional; defaults to `MS_SENDER`)
    - `ALLOWED_ORIGINS` = your deployed URL, e.g. `https://your-site.netlify.app` (recommended)
    - `RESULT_TOKEN` = optional shared token (see note below)
 3. Redeploy. Results now arrive in your Outlook. The result screen shows "✓ Result emailed to your Outlook" when the function accepts it.
@@ -141,7 +141,7 @@ These turn the panel from "a clever tone player" into an instrument that knows w
 
 **Drag & drop:** go to **https://app.netlify.com/drop** and drop the `hearing-test` **folder**. You get a live URL instantly.
 
-**Email delivery:** the app posts results to a **Netlify Form** named `hearing-test`. After deploying, submit one result, then in the Netlify dashboard: **Site → Forms → hearing-test → Add notification → Email** → `douglas@entertrainment.co.uk`. From then on every result (quick test or full audiology, including the audiogram numbers and tinnitus profile) is emailed automatically and stored in the dashboard.
+**Email delivery:** the app posts results to a **Netlify Form** named `hearing-test`. After deploying, submit one result, then in the Netlify dashboard: **Site → Forms → hearing-test → Add notification → Email** → `you@example.com`. From then on every result (quick test or full audiology, including the audiogram numbers and tinnitus profile) is emailed automatically and stored in the dashboard.
 
 **Fallback everywhere:** each result screen also has an **"Email results"** button that opens the tester's own mail app pre-filled and addressed to you — works even without the Netlify setup. (The audiogram *image* is a separate **Download PNG** button, since email links can't carry an attachment.)
 

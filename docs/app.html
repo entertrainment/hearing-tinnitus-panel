@@ -930,7 +930,7 @@
 <script>
 (function(){
   "use strict";
-  var RECIPIENT="douglas@entertrainment.co.uk";
+  var RECIPIENT=["douglas","entertrainment.co.uk"].join("@");  // assembled at runtime to keep the address out of the plaintext source
   var $=function(id){return document.getElementById(id);};
   var TAU=Math.PI*2;
 
