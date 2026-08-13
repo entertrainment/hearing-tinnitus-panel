@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# Node / Netlify
+node_modules/
+.netlify/
+.env
+.env.*
+
+# Editor
+.vscode/
+.idea/

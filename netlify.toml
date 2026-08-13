@@ -1,0 +1,12 @@
+# Netlify config for the Hearing Range Test.
+# The site is a single static file — no build step needed.
+[build]
+  publish = "."
+  command = ""
+
+# Serverless function that emails results from your Outlook via Microsoft Graph.
+# Requires MS_TENANT_ID / MS_CLIENT_ID / MS_CLIENT_SECRET / MS_SENDER as environment
+# variables (Site settings → Environment variables). See netlify/functions/send-result.js.
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
