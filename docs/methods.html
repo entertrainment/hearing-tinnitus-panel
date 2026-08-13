@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scientific methods — Hearing &amp; Tinnitus Panel</title>
+<style>
+  :root{
+    --bg:#f4f7fa; --panel:#ffffff; --panel-2:#eef2f7; --line:#dce3ec; --line-2:#c8d2df;
+    --text:#152030; --muted:#5c6b7f; --faint:#8a97a8;
+    --accent:#0d9488; --accent-2:#0369a1;
+    --good:#0d7a5f; --warn:#a8620a; --bad:#c22a45;
+    --good-bg:#e7f4ee; --warn-bg:#faf0e2; --bad-bg:#fceaee;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0d141c; --panel:#151d27; --panel-2:#1b2634; --line:#28323f; --line-2:#39485a;
+      --text:#e9eef4; --muted:#93a2b4; --faint:#6c7c8e;
+      --accent:#2dd4bf; --accent-2:#38bdf8;
+      --good:#37d39f; --warn:#e0a24a; --bad:#fb7185;
+      --good-bg:#10241d; --warn-bg:#2a2113; --bad-bg:#2a1620;
+    }
+  }
+  :root[data-theme="light"]{ --bg:#f4f7fa; --panel:#ffffff; --panel-2:#eef2f7; --line:#dce3ec; --line-2:#c8d2df; --text:#152030; --muted:#5c6b7f; --faint:#8a97a8; --accent:#0d9488; --accent-2:#0369a1; --good:#0d7a5f; --warn:#a8620a; --bad:#c22a45; --good-bg:#e7f4ee; --warn-bg:#faf0e2; --bad-bg:#fceaee; }
+  :root[data-theme="dark"]{ --bg:#0d141c; --panel:#151d27; --panel-2:#1b2634; --line:#28323f; --line-2:#39485a; --text:#e9eef4; --muted:#93a2b4; --faint:#6c7c8e; --accent:#2dd4bf; --accent-2:#38bdf8; --good:#37d39f; --warn:#e0a24a; --bad:#fb7185; --good-bg:#10241d; --warn-bg:#2a2113; --bad-bg:#2a1620; }
+
+  *{box-sizing:border-box}
+  body{ margin:0; background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.6; -webkit-text-size-adjust:100%; }
+  .wrap{ max-width:780px; margin:0 auto; padding:40px 20px 80px; }
+  a{ color:var(--accent-2); text-underline-offset:2px; }
+
+  .brand{ display:flex; align-items:center; gap:11px; margin-bottom:26px; }
+  .logo{ width:36px; height:36px; border-radius:10px; overflow:hidden; box-shadow:0 6px 20px rgba(20,40,70,.14) }
+  .brand-name{ font-weight:800; letter-spacing:-.02em; font-size:1rem }
+  .brand-name .hl{ color:var(--accent) }
+  .brand-tag{ margin-left:auto; font-size:.75rem; font-weight:600; color:var(--muted); letter-spacing:.02em }
+
+  h1{ font-size:2rem; line-height:1.15; letter-spacing:-.025em; margin:0 0 6px; text-wrap:balance }
+  .lead{ color:var(--muted); font-size:1.05rem; margin:0 0 8px; max-width:62ch }
+  .stamp{ font-size:.8rem; color:var(--faint); margin:0 0 26px }
+
+  .callout{ background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--accent);
+    border-radius:12px; padding:14px 16px; margin:0 0 30px; font-size:.92rem }
+  .callout strong{ color:var(--text) }
+
+  nav.toc{ background:var(--panel-2); border:1px solid var(--line); border-radius:12px; padding:14px 18px; margin:0 0 40px }
+  nav.toc p{ margin:0 0 8px; font-size:.72rem; text-transform:uppercase; letter-spacing:.09em; color:var(--muted); font-weight:700 }
+  nav.toc ol{ margin:0; padding-left:1.2em; columns:2; column-gap:26px; font-size:.9rem }
+  nav.toc li{ margin:3px 0; break-inside:avoid }
+  nav.toc a{ color:var(--text); text-decoration:none }
+  nav.toc a:hover{ color:var(--accent) }
+
+  section{ margin:0 0 44px }
+  h2{ font-size:1.35rem; letter-spacing:-.015em; margin:0 0 4px; display:flex; align-items:baseline; gap:12px; text-wrap:balance }
+  h2 .num{ font-family:var(--mono); font-size:.9rem; color:var(--accent); font-weight:700; letter-spacing:0 }
+  section > .intro{ color:var(--muted); font-size:.95rem; margin:0 0 20px; max-width:64ch }
+
+  .test{ background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:18px 20px; margin:0 0 16px }
+  .test h3{ font-size:1.05rem; margin:0 0 3px; letter-spacing:-.01em; display:flex; align-items:center; gap:10px; flex-wrap:wrap }
+  .chip{ font-size:.66rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; padding:2px 8px; border-radius:99px; white-space:nowrap }
+  .chip.meas{ background:var(--good-bg); color:var(--good) }
+  .chip.deriv{ background:var(--panel-2); color:var(--muted) }
+  .chip.exp{ background:var(--warn-bg); color:var(--warn) }
+  .sub1{ color:var(--muted); font-size:.9rem; margin:0 0 12px }
+
+  dl.fields{ margin:0; display:grid; grid-template-columns:max-content 1fr; gap:6px 16px; align-items:baseline }
+  dl.fields dt{ font-size:.68rem; text-transform:uppercase; letter-spacing:.07em; color:var(--faint); font-weight:700; padding-top:3px }
+  dl.fields dd{ margin:0; font-size:.92rem }
+  dl.fields dd.limit{ color:var(--muted) }
+  code{ font-family:var(--mono); font-size:.84em; background:var(--panel-2); border:1px solid var(--line); border-radius:5px; padding:.05em .4em }
+  .k{ color:var(--accent); font-weight:600 }
+
+  .models{ background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px 20px }
+  .models .m{ display:grid; grid-template-columns:auto 1fr; gap:4px 12px; padding:8px 0; border-bottom:1px solid var(--line) }
+  .models .m:last-child{ border-bottom:none }
+  .models .tag{ font-family:var(--mono); font-weight:700; color:var(--accent) }
+  .models .m span{ font-size:.92rem }
+
+  .safety{ background:var(--bad-bg); border:1px solid color-mix(in srgb,var(--bad) 40%,transparent);
+    border-radius:14px; padding:16px 20px; margin-top:8px }
+  .safety h2{ margin-bottom:8px }
+  .safety h2 .num, .safety strong{ color:var(--bad) }
+
+  .foot{ color:var(--faint); font-size:.8rem; margin-top:40px; border-top:1px solid var(--line); padding-top:18px; text-wrap:balance }
+  @media (max-width:560px){ nav.toc ol{ columns:1 } dl.fields{ grid-template-columns:1fr; gap:2px } dl.fields dt{ padding-top:8px } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="brand">
+    <span class="logo" aria-hidden="true">
+      <svg viewBox="0 0 40 40" width="36" height="36">
+        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--accent)"/><stop offset="1" stop-color="var(--accent-2)"/></linearGradient></defs>
+        <rect width="40" height="40" rx="11" fill="url(#g)"/>
+        <g fill="#fff"><rect x="5.4" y="15" width="2.8" height="10" rx="1.4" opacity=".85"/><rect x="9.8" y="12" width="2.8" height="16" rx="1.4" opacity=".92"/><rect x="14.2" y="8" width="2.8" height="24" rx="1.4"/><rect x="18.6" y="5" width="2.8" height="30" rx="1.4"/><rect x="23" y="8" width="2.8" height="24" rx="1.4"/><rect x="27.4" y="12" width="2.8" height="16" rx="1.4" opacity=".92"/><rect x="31.8" y="15" width="2.8" height="10" rx="1.4" opacity=".85"/></g>
+      </svg>
+    </span>
+    <span class="brand-name">enter<span class="hl">train</span>ment</span>
+    <span class="brand-tag">Methods reference</span>
+  </header>
+
+  <h1>Scientific methods: the Hearing &amp; Tinnitus Panel</h1>
+  <p class="lead">What each test measures, how it does it, the auditory science behind it, what it outputs, and — honestly — where it can be wrong.</p>
+  <p class="stamp">Browser-based auditory psychophysics &amp; tinnitus phenotyping · not a diagnostic instrument or a substitute for calibrated audiometry</p>
+
+  <div class="callout">
+    <strong>The one caveat that colours everything below.</strong> A web browser cannot produce a known sound-pressure level: the actual level at the eardrum depends on the device, the DAC, the headphones and the OS volume, none of which the page can read. So every level here is <strong>relative</strong> — measured against a comfort ceiling the user sets, or against the listener's own best threshold — <strong>not calibrated dB&nbsp;HL</strong>. The <em>shapes and relationships</em> (notches, slopes, pitch-vs-loss, before/after changes) are informative; the absolute numbers are not clinical.
+  </div>
+
+  <p class="stamp" style="margin:0 0 26px"><strong>Current scope.</strong> The present implementation is designed for exploratory, repeated <strong>single-subject</strong> measurements. It is not validated for population-level inference or clinical decision-making, and one person's result does not validate any mechanism.</p>
+
+  <nav class="toc">
+    <p>Contents</p>
+    <ol>
+      <li><a href="#found">Signal &amp; level foundations</a></li>
+      <li><a href="#audio">Pure-tone audiometry</a></li>
+      <li><a href="#din">Speech-in-noise</a></li>
+      <li><a href="#tin">Tinnitus psychoacoustics</a></li>
+      <li><a href="#mech">Mechanism-probing experiments</a></li>
+      <li><a href="#qc">Reliability &amp; data</a></li>
+      <li><a href="#refs">References &amp; background</a></li>
+      <li><a href="#safety">Limitations &amp; safety</a></li>
+    </ol>
+  </nav>
+
+  <!-- 0 -->
+  <section id="found">
+    <h2><span class="num">0</span> Signal &amp; level foundations</h2>
+    <p class="intro">Shared machinery every test is built on, via the Web Audio API.</p>
+
+    <div class="test">
+      <h3>Relative level model <span class="chip deriv">substrate</span></h3>
+      <dl class="fields">
+        <dt>Measures</dt><dd>Sound level as attenuation below a user-set comfort ceiling, not absolute SPL.</dd>
+        <dt>Method</dt><dd>A tone/noise passes through a gain node; level in "relative dB" maps to gain by <code>g = ceiling · 10<sup>(dB − 75)/20</sup></code> over a <span class="k">75&nbsp;dB</span> working range. The ceiling is fixed by a 1&nbsp;kHz reference the user raises to "loud but comfortable".</dd>
+        <dt>Basis</dt><dd>Amplitude scaling: a change of <em>N</em>&nbsp;dB is a factor <code>10<sup>N/20</sup></code> in amplitude (20·log₁₀). Correct as a relative scale; the absolute anchor is unknown.</dd>
+        <dt>Output</dt><dd>All thresholds/loudness are "dB relative" — later re-referenced to the listener's own best.</dd>
+        <dt class="limit">Limits</dt><dd class="limit">Not dB&nbsp;HL/SPL. Device- and headphone-dependent; only meaningful within one session on one setup.</dd>
+      </dl>
+    </div>
+
+    <div class="test">
+      <h3>Coloured-noise generators <span class="chip deriv">substrate</span></h3>
+      <dl class="fields">
+        <dt>Measures</dt><dd>—</dd>
+        <dt>Method</dt><dd>White via a seeded LCG; <span class="k">pink</span> (−3&nbsp;dB/oct) by the Paul-Kellet IIR approximation; brown by leaky integration; blue by differencing; speech-shaped by band-passing pink. Used for maskers, therapy and the speech-in-noise masker.</dd>
+        <dt>Basis</dt><dd>Perceptually, pink/speech-shaped noise matches natural spectra far better than white, which is harsh and fatiguing.</dd>
+        <dt class="limit">Limits</dt><dd class="limit">Buffer approximations, not laboratory-exact spectra.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 1 -->
+  <section id="audio">
+    <h2><span class="num">1</span> Pure-tone audiometry</h2>
+    <p class="intro">A staged, per-ear threshold search across the standard audiometric frequencies (250&nbsp;Hz–8&nbsp;kHz), delivered as a numbered pipeline because the order matters.</p>
+
+    <div class="test">
+      <h3><span style="font-family:var(--mono);color:var(--accent);font-weight:700">1.1</span> Comfort-ceiling calibration <span class="chip deriv">setup</span></h3>
+      <dl class="fields">
+        <dt>Measures</dt><dd>The loudest level the test is allowed to use.</dd>
+        <dt>Method</dt><dd>The listener raises a slider on a 1&nbsp;kHz tone to "clearly audible, never uncomfortable"; that gain becomes the ceiling, and the 75&nbsp;dB range sits below it.</dd>
+        <dt>Basis</dt><dd>A safe, self-set upper bound in place of a calibrated audiometer output.</dd>
+        <dt class="limit">Limits</dt><dd class="limit">Subjective; the true SPL of the ceiling is unknown, so it anchors a relative scale only.</dd>
+      </dl>
+    </div>
+
+    <div class="test">
+      <h3><span style="font-family:var(--mono);color:var(--accent);font-weight:700">1.2</span> Device / channel check <span class="chip meas">verification</span></h3>
+      <dl class="fields">
+        <dt>Measures</dt><dd>Stereo routing (L/R correct, not reversed or leaking) and the audio sample rate.</dd>
+        <dt>Method</dt><dd>A tone panned hard-left then hard-right; the listener names the side. Sample rate is read from the audio context and gates extended highs (Nyquist).</dd>
+        <dt>Basis</dt><dd>Per-ear testing is only valid with true stereo separation; a reversed or leaking channel would misattribute an ear.</dd>
+        <dt class="limit">Limits</dt><dd class="limit">Confirms routing, not acoustic isolation — no microphone means real inter-aural attenuation and headphone response are unmeasured.</dd>
+      </dl>
+    </div>
+
+    <div class="test">
+      <h3><span style="font-family:var(--mono);color:var(--accent);font-weight:700">1.3</span> Warbled-chirp stimulus <span class="chip deriv">stimulus</span></h3>
+      <dl class="fields">
+        <dt>Method</dt><dd>Each presentation is <span class="k">3 pulses</span> (~220&nbsp;ms on / 180&nbsp;off) of a sine, frequency-modulated <span class="k">±4%</span> at 5&nbsp;Hz (a warble), at a <strong>fixed</strong> level.</dd>
+        <dt>Basis</dt><dd>Pulsed/warble tones are standard in clinical audiometry: pulsing aids detection and, critically, distinguishes the probe from tinnitus; warble avoids standing-wave nulls. A fixed level per burst means a slow or late button press cannot inflate the threshold (unlike a rising-ramp method).</dd>
+      </dl>
+    </div>
+
+    <div class="test">
+      <h3><span style="font-family:var(--mono);color:var(--accent);font-weight:700">1.4</span> Bayesian adaptive threshold <span class="chip meas">core measure</span></h3>
+      <p class="sub1">The heart of the audiometry — a probabilistic (ZEST-inspired) estimator, not a fixed staircase.</p>
+      <dl class="fields">
+        <dt>Measures</dt><dd>The detection threshold at each (ear, frequency) — and its uncertainty.</dd>
+        <dt>Method</dt><dd>Each track holds a posterior over threshold θ on a grid (<code>0–75 dB</code>, 2.5&nbsp;dB). A logistic psychometric function <code>P(hear | level, θ)</code> (spread ≈6&nbsp;dB, 3% lapse) updates the posterior after every yes/no. The next chirp is placed at the <strong>posterior mean</strong>; a tone finishes when the posterior SD is small (or a trial cap). New tones borrow an <strong>informed prior</strong> from the listener's age, neighbouring frequencies and the other ear.</dd>
+        <dt>Basis</dt><dd>Maximum-likelihood / Bayesian adaptive psychophysics (ZEST/QUEST family): posterior-mean placement is efficient and the informed prior exploits the known smoothness of threshold curves. It is <em>ZEST-inspired</em> — placement is at the mean, not by expected-information-gain (the Ψ method).</dd>
+        <dt>Output</dt><dd>Threshold (relative dB) <strong>plus a 95% credible interval and trial count</strong> per frequency — not a bare integer. Simulation: ~6 trials/frequency, ~1.8&nbsp;dB mean error.</dd>
+        <dt class="limit">Limits</dt><dd class="limit">Relative, not dB&nbsp;HL; no contralateral masking, so a large asymmetry could reflect cross-hearing; posterior width depends on the assumed psychometric shape.</dd>
+      </dl>
+    </div>
+
+    <div class="test">
+      <h3><span style="font-family:var(--mono);color:var(--accent);font-weight:700">1.5</span> Shuffled interleave &amp; catch trials <span class="chip meas">bias control</span></h3>
+      <dl class="fields">
+        <dt>Measures</dt><dd>Response bias / false-alarm rate, alongside the thresholds.</dd>
+        <dt>Method</dt><dd>Tones are presented in a <strong>randomised order</strong> across ear/frequency/level (never the same pitch twice running), with randomised silent gaps. ~<span class="k">12%</span> of trials are <strong>silent catch trials</strong>; a "heard it" then is a false alarm.</dd>
+        <dt>Basis</dt><dd>Signal-detection theory: measuring hits without false alarms confounds sensitivity with a "say-yes" criterion. Randomisation defeats anticipation and rhythmic guessing.</dd>
+        <dt>Output</dt><dd>Per-ear false-alarm rate feeds the response-quality flag.</dd>
+      </dl>
+    </div>
+
+    <div class="test">
+      <h3><span style="font-family:var(--mono);color:var(--accent);font-weight:700">1.6</span> Extended high frequencies <span class="chip exp">exploratory</span></h3>
+      <dl class="fields">
+        <dt>Measures</dt><dd>Thresholds at <span class="k">10 / 12.5 / 14 / 16&nbsp;kHz</span> (optional).</dd>
+        <dt>Basis</dt><dd>Extended-high-frequency thresholds can detect changes not captured by conventional audiometry, but their interpretation depends strongly on transducer calibration and measurement quality.</dd>
+        <dt class="limit">Limits</dt><dd class="limit">Most consumer headphones roll off sharply above ~6–8&nbsp;kHz, so an apparent EHF loss often reflects the hardware, not the ear — shaded and labelled exploratory, and gated on sample rate.</dd>
+      </dl>
+    </div>
+
+    <div class="test">
+      <h3><span style="font-family:var(--mono);color:var(--accent);font-weight:700">1.7</span> The hearing profile (audiogram) <span class="chip deriv">visualisation</span></h3>
+      <dl class="fields">
+        <dt>Method</dt><dd>Thresholds are <strong>self-referenced</strong> to the listener's own best result (best = 0), plotted with 95%-CI whiskers; red&nbsp;○ right, blue&nbsp;× left; no-response frequencies break the line. Optional overlays: an illustrative age-related shape (ISO-7029-style) and an <strong>estimated tonotopic (Greenwood cochlear-place)</strong> axis <code>x = log₁₀(f/165.4 + 0.88)/2.1</code> — a coordinate estimated from frequency, not a measured cochlear location.</dd>
+        <dt>Basis</dt><dd>Self-referencing gives a meaningful "relative to your own best" read without pretending to dB&nbsp;HL. The Greenwood function maps frequency to position along the basilar membrane — the tonotopic view the tinnitus question turns on.</dd>
+        <dt class="limit">Limits</dt><dd class="limit">Called a "hearing profile", not an audiogram; the age curve is shape-only, not a calibrated comparison.</dd>
+      </dl>
+    </div>
+
+    <div class="test">
+      <h3><span style="font-family:var(--mono);color:var(--accent);font-weight:700">1.8</span> Reliability &amp; test–retest <span class="chip meas">quality</span></h3>
+      <dl class="fields">
+        <dt>Measures</dt><dd>How much to trust the run, and its repeatability.</dd>
+        <dt>Method</dt><dd><em>Response quality</em> summarises false alarms + median credible-interval + trials per ear. <em>Test–retest</em> re-runs the thresholds and reports the mean absolute difference vs the first run, overlaying it dashed.</dd>
+        <dt>Basis</dt><dd>An instrument should report when it doesn't know; repeatability is more informative than any single number.</dd>
+        <dt class="limit">Limits</dt><dd class="limit">Good/Fair/Poor bands are product heuristics, not validated clinical cut-offs (hence "response quality" and "repeatability", not "reliability").</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section id="din">
+    <h2><span class="num">2</span> Speech-in-noise</h2>
+    <p class="intro">A functional measure — understanding speech in noise — that pure-tone thresholds miss.</p>
+    <div class="test">
+      <h3>Digits-in-noise (adaptive) <span class="chip meas">functional measure</span></h3>
+      <dl class="fields">
+        <dt>Measures</dt><dd>The signal-to-noise ratio at which the listener can just report spoken digits — a speech-reception-threshold analogue.</dd>
+        <dt>Method</dt><dd>Three spoken digits (device speech voice) over speech-shaped noise. SNR follows a <strong>1-up/1-down</strong> track (all-three-correct → harder); the noise amplitude is scaled by <code>10<sup>−SNR/20</sup></code> (speech fixed). A larger 4&nbsp;dB step shrinks to 2&nbsp;dB after the first reversal; the threshold is the <strong>mean of the reversal SNRs</strong> (first discarded).</dd>
+        <dt>Basis</dt><dd>The Digits-in-Noise paradigm is calibration-free and correlates with pure-tone audiometry; SNR is <code>20·log₁₀(RMS<sub>speech</sub>/RMS<sub>noise</sub>)</code>, and scaling the noise is a validated "fix-speech" mixing method. It provides a functional speech-in-noise measure that can reveal difficulties not apparent from pure-tone thresholds alone.</dd>
+        <dt>Output</dt><dd>A <strong>relative</strong> SNR threshold (SRT-equivalent). Simulation: recovers a known SRT to ~0.8&nbsp;dB.</dd>
+        <dt class="limit">Limits</dt><dd class="limit">The speech voice's RMS is unmeasured, so the SNR is relative (true = value + an unknown constant), and text-to-speech is not the validated recorded corpus.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section id="tin">
+    <h2><span class="num">3</span> Tinnitus psychoacoustics</h2>
+    <p class="intro">Characterising the percept — pitch, quality, loudness, maskability — and phenotyping its subtype. These are measurements of the percept, <em>not</em> a diagnosis.</p>
+
+    <div class="test">
+      <h3>Pitch match <span class="chip meas">psychoacoustic</span></h3>
+      <dl class="fields">
+        <dt>Measures</dt><dd>The frequency that best matches the tinnitus.</dd>
+        <dt>Method</dt><dd>A slow sweep from 500&nbsp;Hz (documented low bound) rising over ~60&nbsp;s; the listener taps at the match. Repeated up to 3× and combined by <strong>geometric mean</strong>. Each match is then <strong>octave-confirmed</strong> on a live fine-tuner (oscilloscope + spectrum + ÷2/×2 jumps + A/B against silence).</dd>
+        <dt>Basis</dt><dd>Tinnitus pitch matching is notoriously noisy and can exhibit <strong>octave errors</strong>, so the test explicitly checks octave alternatives; best practice is multiple matches combined (a Bayesian-sequential idea) and explicit octave testing.</dd>
+        <dt>Output</dt><dd>Matched pitch (Hz) with the spread across passes as an uncertainty.</dd>
+        <dt class="limit">Limits</dt><dd class="limit">Inherently variable even in clinic; a probe tone can transiently alter the tinnitus during matching.</dd>
+      </dl>
+    </div>
+
+    <div class="test">
+      <h3>Sound-quality audition <span class="chip meas">psychoacoustic</span></h3>
+      <dl class="fields">
+        <dt>Measures</dt><dd>The perceptual character (pure tone / ringing / hiss / buzz / low roar / cricket).</dd>
+        <dt>Method</dt><dd>The listener auditions synthesised exemplars and picks the closest.</dd>
+        <dt>Basis</dt><dd>Tinnitus is often narrowband noise rather than a pure tone; character informs the phenotype and the masker choice.</dd>
+      </dl>
+    </div>
+
+    <div class="test">
+      <h3>Loudness match → sensation level <span class="chip meas">psychoacoustic</span></h3>
+      <dl class="fields">
+        <dt>Measures</dt><dd>How loud the tinnitus is <em>relative to the listener's own threshold</em>.</dd>
+        <dt>Method</dt><dd>A tone at the matched pitch is set to equal the tinnitus loudness; the result is expressed as <strong>dB SL</strong> (Sensation Level) = matched level − threshold at that pitch.</dd>
+        <dt>Basis</dt><dd>A raw level is meaningless uncalibrated; sensation level above threshold is the interpretable quantity, and tinnitus is typically only a few dB SL.</dd>
+        <dt class="limit">Limits</dt><dd class="limit">A loudness-match dB is not a loudness VAS; both are approximate on uncalibrated hardware.</dd>
+      </dl>
+    </div>
+
+    <div class="test">
+      <h3>Minimum masking level (MML) <span class="chip meas">psychoacoustic</span></h3>
+      <dl class="fields">
+        <dt>Measures</dt><dd>The lowest noise level that just covers the tinnitus.</dd>
+        <dt>Method</dt><dd>Narrowband noise around the pitch is raised until the tinnitus is no longer heard.</dd>
+        <dt>Basis</dt><dd>A standard tinnitus-assessment metric; also useful for setting up a masker.</dd>
+      </dl>
+    </div>
+
+    <div class="test">
+      <h3>Minimum residual-inhibition level (MRIL) <span class="chip meas">psychoacoustic</span></h3>
+      <dl class="fields">
+        <dt>Measures</dt><dd>The lowest stimulation level that produces temporary post-stimulus suppression (residual inhibition).</dd>
+        <dt>Method</dt><dd><strong>Triangular-envelope</strong> narrowband bursts (0.5&nbsp;s on / 0.4&nbsp;off) around the pitch, with an adaptive level search; after each train the listener reports gone / quieter / same / louder.</dd>
+        <dt>Basis</dt><dd>Residual inhibition is a well-studied phenomenon; a triangular envelope gives comparable results with more comfort than hard-gated bursts.</dd>
+        <dt class="limit">Limits</dt><dd class="limit">RI is variable and can interact with pitch matching; a single run is exploratory.</dd>
+      </dl>
+    </div>
+
+    <div class="test">
+      <h3>Questionnaire &amp; auditory symptom profile <span class="chip meas">structured history</span></h3>
+      <dl class="fields">
+        <dt>Measures</dt><dd>Laterality, pulsatility, somatic (jaw/neck) modulation, fluctuation/onset, and a middle-ear symptom cluster (flutter, fullness, sound-triggered, swallow/yawn).</dd>
+        <dt>Basis</dt><dd>These separate red-flag and pattern categories: pulsatile → possible vascular; unilateral → asymmetry check; somatic → musculoskeletal; the middle-ear cluster records a symptom pattern that may warrant middle-ear / somatosensory assessment. It records patterns; it does not identify a middle-ear pathology.</dd>
+        <dt>Output</dt><dd>Prominent flags (e.g. urgent if sudden onset + asymmetric profile) and an ENT/audiology steer.</dd>
+      </dl>
+    </div>
+
+    <div class="test">
+      <h3>Phenotype classifier <span class="chip deriv">rule-based</span></h3>
+      <dl class="fields">
+        <dt>Method</dt><dd>Presents <strong>observed characteristics → a neutral phenotype descriptor → clinical flags</strong>, with any aetiological associations clearly hedged as "possible, not causes".</dd>
+        <dt>Basis</dt><dd>A phenomenological questionnaire cannot infer pathology; the literature (and NICE) caution against treating psychoacoustic tinnitus features as a clean map to a cause.</dd>
+        <dt class="limit">Limits</dt><dd class="limit">A measurement summary, explicitly not a diagnosis.</dd>
+      </dl>
+    </div>
+
+    <div class="test">
+      <h3>Impact index <span class="chip meas">subjective burden</span></h3>
+      <dl class="fields">
+        <dt>Measures</dt><dd>How much the tinnitus affects daily life (0–100).</dd>
+        <dt>Method</dt><dd>Ten items scored 0–10, averaged ×10, banded Negligible→Severe.</dd>
+        <dt>Basis</dt><dd>Psychoacoustic pitch/loudness correlate weakly with distress; a validated-style burden score captures what matters for management.</dd>
+        <dt class="limit">Limits</dt><dd class="limit">Original wording modelled on validated instruments (e.g. the Tinnitus Functional Index), not the copyrighted questionnaire itself — for care, a clinician should administer the validated form.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section id="mech">
+    <h2><span class="num">4</span> Mechanism-probing experiments</h2>
+    <p class="intro">The scientifically interesting layer: relating the tinnitus to the hearing loss, and probing whether external sound changes it. All at comfortable levels only.</p>
+
+    <div class="test">
+      <h3>Pitch vs hearing-loss geometry <span class="chip deriv">derived</span></h3>
+      <dl class="fields">
+        <dt>Measures</dt><dd>Where the tinnitus pitch sits relative to the loss.</dd>
+        <dt>Method</dt><dd>Computes the loss <strong>edge</strong> (first frequency ≥15&nbsp;dB worse than best), the <strong>octave displacement</strong> <code>log₂(pitch/edge)</code>, the <strong>high-frequency slope</strong> (dB/octave, 1&nbsp;kHz→top), and both estimated tonotopic positions (Greenwood cochlear-place function — estimated from frequency, not measured on the cochlea).</dd>
+        <dt>Basis</dt><dd>Tests the tonotopic/central-gain account: the literature finds pitch usually sits <em>within</em> the loss and often &gt;1 octave above the edge, not at it. So it names a leaning — pitch <strong>at the edge</strong> → Model&nbsp;A; pitch <strong>well above</strong> → an emergent/compensatory frequency (Models&nbsp;B/C).</dd>
+        <dt class="limit">Limits</dt><dd class="limit">Correlational and single-subject; suggestive, never confirmatory.</dd>
+      </dl>
+    </div>
+
+    <div class="test">
+      <h3>Frequency-response / residual-inhibition map <span class="chip exp">experiment</span></h3>
+      <dl class="fields">
+        <dt>Measures</dt><dd>Where, across the neighbourhood of the pitch, external sound quietens or worsens the tinnitus.</dd>
+        <dt>Method</dt><dd>Comfortable narrow bands from ~½× to 2× the pitch; after each, the listener reports the change.</dd>
+        <dt>Basis</dt><dd>Frequency-specific residual inhibition; suppression near the pitch supports an RI relationship and can guide a masker.</dd>
+        <dt class="limit">Limits</dt><dd class="limit">Order effects and RI carry-over between trials; comfortable levels only — never used to provoke.</dd>
+      </dl>
+    </div>
+
+    <div class="test">
+      <h3>Probe &amp; masker (modulation) <span class="chip deriv">tool</span></h3>
+      <dl class="fields">
+        <dt>Method</dt><dd>A live, tweakable sound — tone / narrowband / notched / pink / speech — with AM tremolo, FM warble, beating, notch width and a master low-pass, updated smoothly.</dd>
+        <dt>Basis</dt><dd>Lets the listener match the tinnitus <em>character</em> (pulsing, buzzing, warble) beyond pitch, and set up a comfortable masker; a notch removes energy at the pitch (experimental stimulus generation, not a validated therapy).</dd>
+      </dl>
+    </div>
+
+    <div class="test">
+      <h3>Spectral stimulus reactivity <span class="chip exp">experiment</span></h3>
+      <dl class="fields">
+        <dt>Measures</dt><dd>Whether spectral <em>structure</em> — not loudness — changes the tinnitus.</dd>
+        <dt>Method</dt><dd>Controlled "degraded audio" conditions from a harmonic source: <span class="k">A</span> full band → <span class="k">B</span> telephone band (300–3400&nbsp;Hz) → <span class="k">C</span> band + harmonic peaks → <span class="k">D</span> codec-like (band + peaks + soft distortion + a "boxy" speaker peak). Each is played comfortably; the app computes its <strong>spectral descriptors</strong> (centroid, flatness, crest, harmonic-to-noise ratio, peak list, a stored 48-bin spectrum) and records the tinnitus change <strong>before → after → a 5/15/30/60&nbsp;s recovery curve</strong>. The listener's own recording can be loaded through the codec chain.</dd>
+        <dt>Basis</dt><dd>A behavioural test of the "frequency-selective excitation → nonlinear processing → persistent percept" hypothesis (H2→H3): does a spectral signature predict a change, rather than "did a tone help?"</dd>
+        <dt class="limit">Limits</dt><dd class="limit">Hypothesis-explorer, not proof; the codec→tinnitus chain is unestablished. Deliberately capped at comfortable levels — <strong>never reproduce a past exposure to re-trigger symptoms</strong>.</dd>
+      </dl>
+    </div>
+
+    <div class="models" style="margin-top:6px">
+      <p style="font-size:.72rem; text-transform:uppercase; letter-spacing:.09em; color:var(--muted); font-weight:700; margin:0 0 6px">Mechanistic hypotheses the measurements can inform</p>
+      <p style="font-size:.9rem; color:var(--muted); margin:0 0 10px">The measurements are compatible with several overlapping explanations, which may coexist. The panel <strong>does not determine which mechanism is responsible</strong> in an individual — these experiments provide behavioural observations relevant to the models, not a way to select between them. They are theoretical frameworks, not competing diagnoses.</p>
+      <div class="m"><span class="tag">A</span><span><strong>Missing-signal compensation</strong> — the brain represents the deprived frequency more. <em>Central.</em></span></div>
+      <div class="m"><span class="tag">B</span><span><strong>Noise amplification (stochastic resonance)</strong> — internal gain/noise rises to recover weak signals, and that noise becomes audible. <em>Central.</em></span></div>
+      <div class="m"><span class="tag">C</span><span><strong>Prediction error</strong> — degraded evidence mismatches the brain's model, which fills in a percept. <em>Central.</em></span></div>
+      <div class="m"><span class="tag">D</span><span><strong>Peripheral generator</strong> — the damaged cochlea itself produces abnormal activity (e.g. self-oscillating hair cells). <em>Peripheral.</em></span></div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section id="qc">
+    <h2><span class="num">5</span> Reliability &amp; data</h2>
+    <p class="intro">Turning the tests into a defensible, re-analysable record.</p>
+    <div class="test">
+      <h3>Raw session export <span class="chip meas">reproducibility</span></h3>
+      <dl class="fields">
+        <dt>Method</dt><dd>A JSON export carries per-frequency thresholds <strong>with posterior SD and trial counts</strong>, catch-trial/false-alarm data, the hardware fingerprint (sample rate, channel check, headphone type), the full tinnitus profile, the frequency-response map, and each reactivity condition's descriptors, stored spectrum and recovery curve.</dd>
+        <dt>Basis</dt><dd>Exporting <em>observations and posterior state</em> (not just the final numbers) lets a session be re-analysed later with different estimators/priors, or compared against calibrated audiometry — the route from a clever app toward a validation study.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section id="refs">
+    <h2><span class="num">6</span> References &amp; scientific background</h2>
+    <p class="intro">The literature that informed the design, grouped by theme. Peer-reviewed work and theoretical/preprint work are listed separately so the evidence hierarchy stays explicit. Links open external sites (journals, Consensus, arXiv).</p>
+
+    <div class="test">
+      <h3>Tinnitus mechanisms</h3>
+      <ul style="margin:6px 0 0; padding-left:18px; font-size:.9rem; line-height:1.7">
+        <li><a href="https://consensus.app/papers/details/90486d7b18805649a59916e5043644be/">Revisiting the Cochlear and Central Mechanisms of Tinnitus</a> &mdash; Nore&ntilde;a, 2015</li>
+        <li><a href="https://consensus.app/papers/details/47daf797c518507fbfce72855e497395/">Neurological Tinnitus: Pathophysiological Mechanisms</a> &mdash; Cortez et al., 2025</li>
+        <li><a href="https://consensus.app/papers/details/ccc3a260fee6594cbe932c2bc414e806/">The Neural Mechanisms of Tinnitus: an fMRI Perspective</a> &mdash; Hu et al., 2021</li>
+        <li><a href="https://pubmed.ncbi.nlm.nih.gov/22641191/">An active loudness model: tinnitus as increased central noise</a> &mdash; Zeng, 2013</li>
+      </ul>
+    </div>
+
+    <div class="test">
+      <h3>Tinnitus pitch vs hearing loss</h3>
+      <ul style="margin:6px 0 0; padding-left:18px; font-size:.9rem; line-height:1.7">
+        <li><a href="https://www.tandfonline.com/doi/pdf/10.3109/14992027.2014.979373">Relationship between tinnitus pitch and edge of hearing loss (narrow-band tinnitus)</a> &mdash; Int. J. Audiology</li>
+        <li><a href="https://consensus.app/papers/details/4651a844c23a5315aa8273dec0a5eae5/">Does the tinnitus pitch correlate with the frequency of hearing loss?</a> &mdash; Yakunina et al., 2020</li>
+        <li><a href="https://consensus.app/papers/details/5b533d7b1646503e86d70cca705c9d5a/">Tinnitus pitch, audiogram edge &amp; stream segregation</a> &mdash; Jain et al., 2021</li>
+        <li><a href="https://consensus.app/papers/details/4a8c7b7d3dc4598ba081cb18a2e450da/">The tonotopy of tinnitus (acoustic vs cochlear-implant stimulation)</a> &mdash; Di Cesare et al., 2025</li>
+      </ul>
+    </div>
+
+    <div class="test">
+      <h3>Cochlear nonlinearities</h3>
+      <ul style="margin:6px 0 0; padding-left:18px; font-size:.9rem; line-height:1.7">
+        <li><a href="https://consensus.app/papers/details/e12480e52628567ea2036d3fcea21a8c/">A critique of the critical cochlea: Hopf&mdash;a bifurcation&mdash;is better than none</a> &mdash; Hudspeth et al., 2010</li>
+        <li><a href="https://consensus.app/papers/details/5e81d61a50d85c9c8e3eff83258165ab/">Amplification through local critical behavior in the mammalian cochlea</a> &mdash; Alonso et al., 2025 (PNAS)</li>
+        <li><a href="https://consensus.app/papers/details/67214b53f2af5a86bce97c0cea431ecc/">Physical basis of two-tone interference in hearing</a> &mdash; J&uuml;licher et al., 2001 (PNAS)</li>
+        <li><a href="https://consensus.app/papers/details/a067198e053b5fb1955c2f4c756d922a/">Tinnitus-associated spontaneous otoacoustic emissions (self-oscillating hair cells)</a> &mdash; Plinkert et al., 1990</li>
+      </ul>
+    </div>
+
+    <div class="test">
+      <h3>Tinnitus psychoacoustics &amp; pitch measurement</h3>
+      <ul style="margin:6px 0 0; padding-left:18px; font-size:.9rem; line-height:1.7">
+        <li><a href="https://consensus.app/papers/details/8a33bdecc1de5d40933859b4ca39cf43/">A Bayesian Perspective on Tinnitus Pitch Matching</a> &mdash; McMillan et al., 2014</li>
+        <li><a href="https://consensus.app/papers/details/09f2c7df07355e558017a46c2349ca35/">Automated (self-guided) tinnitus pitch matching</a> &mdash; Wunderlich et al., 2015</li>
+        <li><a href="https://arxiv.org/abs/1811.03848">Ear-canal acoustics / individual frequency response</a> &mdash; arXiv 1811.03848 (preprint)</li>
+      </ul>
+    </div>
+
+    <div class="test">
+      <h3>Middle ear &amp; acoustic shock</h3>
+      <ul style="margin:6px 0 0; padding-left:18px; font-size:.9rem; line-height:1.7">
+        <li><a href="https://consensus.app/papers/details/02d44ab1673459599a868b4d56a5808d/">Re-framing tonic tensor tympani syndrome as middle-ear muscle dysregulation</a> &mdash; Amjad et al., 2025</li>
+        <li><a href="https://consensus.app/papers/details/6cac29fb1f975d7ba79b83c2a3a0e4dd/">Exploring middle-ear function in tinnitus / fullness / pain</a> &mdash; Fournier et al., 2022</li>
+        <li><a href="https://consensus.app/papers/details/ba7469799b105bf697cdedf177d2de79/">An integrative model of the symptom cluster after acoustic shock</a> &mdash; Nore&ntilde;a et al., 2018</li>
+      </ul>
+    </div>
+
+    <div class="test">
+      <h3>Hearing-loss / hidden cochlear damage</h3>
+      <ul style="margin:6px 0 0; padding-left:18px; font-size:.9rem; line-height:1.7">
+        <li><a href="https://consensus.app/papers/details/a0e465b561915313be68c3243057fa00/">Cochlear nerve degeneration after &ldquo;temporary&rdquo; noise-induced hearing loss (synaptopathy)</a> &mdash; Kujawa &amp; Liberman, 2009</li>
+      </ul>
+    </div>
+
+    <div class="test">
+      <h3>Theoretical / preprint literature <span class="chip exp">not peer-reviewed</span></h3>
+      <p class="sub1" style="margin:0 0 6px">Where the stochastic-resonance and nonlinear-cochlea hypotheses come from &mdash; theoretical and preprint work, kept separate from established clinical/audiological evidence.</p>
+      <ul style="margin:0; padding-left:18px; font-size:.9rem; line-height:1.7">
+        <li><a href="https://arxiv.org/abs/1603.04721">Stochastic-resonance upregulation of internal noise after hearing loss as a correlate of tinnitus</a> &mdash; arXiv 1603.04721 (preprint)</li>
+        <li><a href="https://arxiv.org/abs/2506.17736">Ten Years of the Stochastic Resonance Model of Tinnitus</a> &mdash; arXiv 2506.17736 (preprint review)</li>
+        <li><a href="https://arxiv.org/abs/nlin/0005042">Two-tone interference &amp; distortion products in a nonlinear cochlea</a> &mdash; arXiv nlin/0005042 (preprint)</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- safety -->
+  <section id="safety" class="safety">
+    <h2><span class="num">!</span> Limitations &amp; safety, in one place</h2>
+    <ul style="margin:4px 0 0; padding-left:20px; font-size:.93rem">
+      <li><strong>Uncalibrated &amp; relative.</strong> No true dB&nbsp;HL/SPL; results are device- and headphone-dependent and valid within one session/setup. Trust shapes and relationships, not absolute values.</li>
+      <li><strong>No masking.</strong> There is no contralateral masking, so a marked left/right asymmetry could reflect cross-hearing rather than one ear.</li>
+      <li><strong>Extended highs are hardware-limited.</strong> Apparent 10–16&nbsp;kHz loss is often the headphones, not the ear.</li>
+      <li><strong>Tinnitus outputs are measurements, not a diagnosis.</strong> Pitch/loudness/character are variable and weakly related to a cause or to distress; the classifier is a phenotype summary.</li>
+      <li><strong>Comfortable levels only.</strong> The experiments never drive the ear hard, and must not be used to reproduce a past exposure or provoke symptoms.</li>
+      <li><strong>Red flags go to a professional:</strong> sudden, one-sided, pulsatile, or asymmetric hearing change, or tinnitus with vertigo — see an audiologist or ENT, not a web page.</li>
+    </ul>
+  </section>
+
+  <p class="foot">entertrainment · Hearing &amp; Tinnitus Panel — a browser-based auditory psychophysics and tinnitus phenotyping instrument. This document describes methods; it is not medical advice, and the panel is not a substitute for calibrated audiometry or clinical assessment.</p>
+
+</div>
+
+</body>
+</html>

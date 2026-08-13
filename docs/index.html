@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hearing &amp; Tinnitus Panel — browser-based auditory psychophysics</title>
+<meta name="description" content="A self-contained, offline-capable hearing and tinnitus test that runs in any browser: Bayesian adaptive audiometry, speech-in-noise, tinnitus psychoacoustics and exploratory mechanism experiments. Uncalibrated and relative — not a diagnostic instrument.">
+<style>
+  :root{
+    --bg:#f4f7fa; --panel:#ffffff; --panel-2:#eef2f7; --line:#dce3ec; --line-2:#c8d2df;
+    --text:#152030; --muted:#5c6b7f; --faint:#8a97a8;
+    --accent:#0d9488; --accent-2:#0369a1;
+    --good:#0d7a5f; --bad:#c22a45; --good-bg:#e7f4ee; --bad-bg:#fceaee;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --shadow:0 8px 30px rgba(20,40,70,.08);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0d141c; --panel:#151d27; --panel-2:#1b2634; --line:#28323f; --line-2:#39485a;
+      --text:#e9eef4; --muted:#93a2b4; --faint:#6c7c8e;
+      --accent:#2dd4bf; --accent-2:#38bdf8;
+      --good:#37d39f; --bad:#fb7185; --good-bg:#10241d; --bad-bg:#2a1620;
+      --shadow:0 8px 30px rgba(0,0,0,.4);
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{ margin:0; background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.6; -webkit-text-size-adjust:100%; }
+  a{ color:var(--accent-2); text-underline-offset:2px; }
+  .wrap{ max-width:900px; margin:0 auto; padding:0 22px; }
+  .mono{ font-family:var(--mono); }
+
+  /* header */
+  header.top{ position:sticky; top:0; z-index:5; background:color-mix(in srgb,var(--bg) 86%,transparent);
+    backdrop-filter:saturate(1.4) blur(8px); border-bottom:1px solid var(--line); }
+  .top .wrap{ display:flex; align-items:center; gap:12px; height:60px; }
+  .logo{ width:34px; height:34px; border-radius:9px; overflow:hidden; box-shadow:var(--shadow); flex:none }
+  .brand{ font-weight:800; letter-spacing:-.02em; font-size:1rem }
+  .brand .hl{ color:var(--accent) }
+  .badge{ font-size:.68rem; font-weight:700; letter-spacing:.03em; color:var(--muted);
+    border:1px solid var(--line); border-radius:99px; padding:3px 9px; white-space:nowrap }
+  nav.links{ margin-left:auto; display:flex; gap:20px; align-items:center; font-size:.9rem; font-weight:600 }
+  nav.links a{ color:var(--text); text-decoration:none }
+  nav.links a:hover{ color:var(--accent) }
+  @media (max-width:600px){ nav.links .hideSm{ display:none } .badge{ display:none } }
+
+  /* hero */
+  .hero{ padding:72px 0 40px; }
+  .eyebrow{ font-size:.8rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--accent); margin:0 0 14px }
+  h1{ font-size:clamp(2rem,5.2vw,3.1rem); line-height:1.08; letter-spacing:-.03em; margin:0 0 18px; text-wrap:balance; max-width:16ch }
+  .tagline{ font-size:1.12rem; color:var(--muted); max-width:60ch; margin:0 0 28px }
+  .cta{ display:flex; flex-wrap:wrap; gap:12px; align-items:center }
+  .btn{ display:inline-flex; align-items:center; gap:6px; font-weight:700; font-size:.95rem;
+    border-radius:11px; padding:12px 18px; text-decoration:none; border:1px solid transparent; cursor:pointer }
+  .btn.primary{ background:var(--accent); color:#fff }
+  .btn.primary:hover{ filter:brightness(1.06) }
+  .btn.ghost{ background:var(--panel); color:var(--text); border-color:var(--line) }
+  .btn.ghost:hover{ border-color:var(--accent) }
+
+  /* sections */
+  section{ padding:34px 0; border-top:1px solid var(--line) }
+  section:first-of-type{ border-top:none }
+  h2{ font-size:1.5rem; letter-spacing:-.02em; margin:0 0 6px; text-wrap:balance }
+  .lede{ color:var(--muted); max-width:66ch; margin:0 0 22px }
+  h3{ font-size:1.02rem; margin:0 0 4px; letter-spacing:-.01em }
+
+  /* flow chain */
+  .flow{ background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--accent);
+    border-radius:12px; box-shadow:var(--shadow); padding:20px 22px; margin:6px 0 4px;
+    font-weight:600; text-align:center; line-height:2.1; font-size:1.02rem; }
+  .flow .arw{ color:var(--accent); font-weight:800; margin:0 4px }
+  .flow em{ color:var(--accent); font-style:normal; font-weight:800 }
+  .cap{ color:var(--faint); font-size:.85rem; margin:10px 2px 0; text-align:center }
+
+  /* card grid */
+  .grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px }
+  @media (max-width:640px){ .grid{ grid-template-columns:1fr } }
+  .card{ background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:18px 20px; box-shadow:var(--shadow) }
+  .card p{ margin:6px 0 0; color:var(--muted); font-size:.92rem }
+  .card .meth{ margin-top:10px; font-family:var(--mono); font-size:.78rem; color:var(--accent);
+    background:var(--panel-2); border:1px solid var(--line); border-radius:8px; padding:6px 9px; display:inline-block }
+
+  /* two columns can/cannot */
+  .cols{ display:grid; grid-template-columns:1fr 1fr; gap:16px }
+  @media (max-width:560px){ .cols{ grid-template-columns:1fr } }
+  .col h3{ display:flex; align-items:center; gap:8px; font-size:.82rem; text-transform:uppercase; letter-spacing:.05em }
+  .col.can h3{ color:var(--good) } .col.cant h3{ color:var(--bad) }
+  .col ul{ margin:8px 0 0; padding-left:18px; color:var(--muted); font-size:.92rem; line-height:1.75 }
+
+  .callout{ background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--accent-2);
+    border-radius:12px; padding:14px 18px; font-size:.92rem; color:var(--muted); margin-top:16px }
+  .callout strong{ color:var(--text) }
+
+  /* under the hood list */
+  ul.tech{ list-style:none; margin:0; padding:0; display:grid; gap:10px }
+  ul.tech li{ padding-left:22px; position:relative; color:var(--muted); font-size:.94rem }
+  ul.tech li::before{ content:"→"; position:absolute; left:0; color:var(--accent); font-weight:800 }
+  ul.tech b{ color:var(--text) }
+  code{ font-family:var(--mono); font-size:.85em; background:var(--panel-2); border:1px solid var(--line); border-radius:5px; padding:.05em .4em }
+
+  /* deploy block */
+  pre.code{ background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 16px;
+    overflow-x:auto; font-family:var(--mono); font-size:.82rem; color:var(--text); box-shadow:var(--shadow); margin:0 }
+  pre.code .c{ color:var(--faint) }
+
+  footer{ border-top:1px solid var(--line); padding:26px 0 60px; color:var(--faint); font-size:.82rem; text-wrap:balance }
+  footer a{ color:var(--muted) }
+  .disc{ background:var(--bad-bg); border:1px solid color-mix(in srgb,var(--bad) 35%,transparent);
+    border-radius:12px; padding:13px 16px; font-size:.86rem; color:var(--text); margin:0 0 24px }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <span class="logo" aria-hidden="true">
+      <svg viewBox="0 0 40 40" width="34" height="34">
+        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--accent)"/><stop offset="1" stop-color="var(--accent-2)"/></linearGradient></defs>
+        <rect width="40" height="40" rx="10" fill="url(#g)"/>
+        <g fill="#fff"><rect x="5.4" y="15" width="2.8" height="10" rx="1.4" opacity=".85"/><rect x="9.8" y="12" width="2.8" height="16" rx="1.4" opacity=".92"/><rect x="14.2" y="8" width="2.8" height="24" rx="1.4"/><rect x="18.6" y="5" width="2.8" height="30" rx="1.4"/><rect x="23" y="8" width="2.8" height="24" rx="1.4"/><rect x="27.4" y="12" width="2.8" height="16" rx="1.4" opacity=".92"/><rect x="31.8" y="15" width="2.8" height="10" rx="1.4" opacity=".85"/></g>
+      </svg>
+    </span>
+    <span class="brand">enter<span class="hl">train</span>ment</span>
+    <span class="badge">MIT · Web Audio · no backend</span>
+    <nav class="links">
+      <a class="hideSm" href="#measures">Measures</a>
+      <a class="hideSm" href="#honesty">Limits</a>
+      <a href="methods.html">Methods</a>
+      <a href="https://github.com/entertrainment/hearing-tinnitus-panel">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <!-- HERO -->
+    <div class="hero">
+      <p class="eyebrow">Browser-based auditory psychophysics &amp; tinnitus phenotyping</p>
+      <h1>Where does the tinnitus sit, relative to the hearing loss?</h1>
+      <p class="tagline">A self-contained hearing &amp; tinnitus instrument that runs in any browser — Bayesian adaptive audiometry, speech-in-noise, tinnitus psychoacoustics and exploratory mechanism experiments. Uncalibrated and <em>relative</em>: a research and phenotyping tool, <strong>not a diagnostic device</strong>.</p>
+      <div class="cta">
+        <a class="btn primary" href="app.html">Launch the panel <span aria-hidden="true">→</span></a>
+        <a class="btn ghost" href="methods.html">Read the methods <span aria-hidden="true">→</span></a>
+        <a class="btn ghost" href="https://github.com/entertrainment/hearing-tinnitus-panel">View source <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+
+    <!-- THE QUESTION -->
+    <section id="question">
+      <h2>The primary analytical question</h2>
+      <p class="lede">Tinnitus is often discussed in terms of reduced input to the ear and compensatory changes in the central auditory system. A simple missing-input model <em>might</em> predict that the tinnitus should fall where hearing sensitivity is reduced — but in practice its pitch does not necessarily land at the audiometric edge. The panel estimates these quantities together and compares them:</p>
+      <div class="flow">
+        hearing profile <span class="arw">→</span> <em>loss edge</em> <span class="arw">→</span> tinnitus pitch <span class="arw">→</span> <em>octave displacement</em> <span class="arw">→</span> estimated tonotopic position
+      </div>
+      <p class="cap">Greenwood tonotopic coordinate is estimated from frequency — not a measured cochlear location. The result is correlational and specific to the individual.</p>
+    </section>
+
+    <!-- WHAT IT MEASURES -->
+    <section id="measures">
+      <h2>What the panel measures</h2>
+      <p class="lede">Four layers, from peripheral sensitivity to controlled perturbation of the percept.</p>
+      <div class="grid">
+        <div class="card">
+          <h3>Hearing profile</h3>
+          <p>Per-ear detection thresholds, 250&nbsp;Hz–8&nbsp;kHz (plus optional extended highs), each with an uncertainty estimate, false-alarm rate and test–retest variation.</p>
+          <span class="meth">Bayesian ZEST-inspired · warbled chirps · catch trials</span>
+        </div>
+        <div class="card">
+          <h3>Functional hearing</h3>
+          <p>A digits-in-noise task estimates the signal-to-noise ratio needed to recognise speech — information pure-tone thresholds alone can miss.</p>
+          <span class="meth">1-up/1-down adaptive · relative SRT</span>
+        </div>
+        <div class="card">
+          <h3>Tinnitus phenotype</h3>
+          <p>Pitch (with an explicit octave check), loudness relative to threshold, sound character, minimum masking level and residual inhibition.</p>
+          <span class="meth">geometric-mean pitch match · dB SL · MML / MRIL</span>
+        </div>
+        <div class="card">
+          <h3>Mechanism experiments</h3>
+          <p>Exploratory: pitch-vs-loss geometry, a residual-inhibition frequency map, and spectral stimulus reactivity (before → after → recovery).</p>
+          <span class="meth">Greenwood place · spectral descriptors · recovery curve</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- HONESTY -->
+    <section id="honesty">
+      <h2>Built to be honest about its limits</h2>
+      <p class="lede">A browser cannot measure the pressure at the eardrum — device, DAC, OS volume, headphones and coupling all affect the delivered sound. So the panel surfaces what is meaningful on uncalibrated hardware, and hides nothing behind apparently precise numbers.</p>
+      <div class="cols">
+        <div class="col can">
+          <h3><span aria-hidden="true">✓</span> It can explore</h3>
+          <ul>
+            <li>an individual hearing profile</li>
+            <li>tinnitus pitch &amp; loudness relationships</li>
+            <li>functional hearing in noise</li>
+            <li>residual inhibition &amp; stimulus reactivity</li>
+            <li>measurement repeatability</li>
+          </ul>
+        </div>
+        <div class="col cant">
+          <h3><span aria-hidden="true">✕</span> It cannot establish</h3>
+          <ul>
+            <li>the medical cause of tinnitus</li>
+            <li>cochlear pathology</li>
+            <li>calibrated hearing thresholds (dB&nbsp;HL)</li>
+            <li>a specific neural mechanism</li>
+            <li>treatment efficacy, or a cure</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout">
+        <strong>Current scope.</strong> Designed for exploratory, repeated <strong>single-subject</strong> measurements — not validated for population-level inference or clinical decision-making. Comfortable levels only; never raise levels to “test tolerance”. Sudden, one-sided, pulsatile or asymmetric hearing change — or tinnitus with vertigo — needs professional assessment.
+      </div>
+    </section>
+
+    <!-- UNDER THE HOOD -->
+    <section id="hood">
+      <h2>Under the hood</h2>
+      <p class="lede">Everything runs client-side on the Web Audio API. No account, no upload — audio is processed locally; only a numeric results summary is ever transmitted (and only if you configure email).</p>
+      <ul class="tech">
+        <li><b>Bayesian adaptive thresholds (ZEST-inspired).</b> A logistic psychometric posterior over each (ear, frequency), placed at the posterior mean, with informed priors from age, neighbouring frequencies and the other ear — reporting <code>threshold + 95% credible interval + trial count</code>.</li>
+        <li><b>Bias controls.</b> Warbled pulsed chirps at a fixed level (reaction-time-proof), shuffled interleaving, and silent <b>catch trials</b> for a signal-detection false-alarm rate.</li>
+        <li><b>Speech-in-noise.</b> Adaptive digits-in-noise with <code>SNR = 20·log₁₀(RMS_speech / RMS_noise)</code>; a relative SRT from reversal means.</li>
+        <li><b>Tonotopy.</b> A Greenwood place estimate <code>x = log₁₀(f/165.4 + 0.88)/2.1</code> maps pitch and loss edge onto an estimated cochlear coordinate.</li>
+        <li><b>Spectral reactivity.</b> Controlled degraded-audio conditions with spectral descriptors (centroid, flatness, crest, HNR) and a 0/5/15/30/60&nbsp;s recovery curve.</li>
+      </ul>
+    </section>
+
+    <!-- DEPLOY / CTA -->
+    <section id="run">
+      <h2>Run it yourself</h2>
+      <p class="lede">One self-contained <code>index.html</code> — open it locally, host it as a static file, or deploy to Netlify (the optional serverless function emails results via Microsoft Graph; set the <code class="mono">MS_*</code> env vars). No keys live in the repo.</p>
+      <pre class="code"><span class="c"># clone and open — that's it</span>
+git clone https://github.com/entertrainment/hearing-tinnitus-panel
+open hearing-tinnitus-panel/index.html
+
+<span class="c"># or try it right here</span>
+<a href="app.html">→ Launch the panel</a>   <a href="methods.html">→ Scientific methods</a></pre>
+    </section>
+
+  </div>
+
+  <div class="wrap">
+    <footer>
+      <div class="disc"><strong>Not medical advice.</strong> This is an uncalibrated, browser-based research/phenotyping tool — not a medical device, not a diagnostic instrument, and not a substitute for calibrated audiometry or clinical assessment.</div>
+      © 2026 entertrainment · <a href="https://github.com/entertrainment/hearing-tinnitus-panel/blob/main/LICENSE">MIT License</a> · built on the Web Audio API ·
+      <a href="https://github.com/entertrainment/hearing-tinnitus-panel">source on GitHub</a>
+    </footer>
+  </div>
+</main>
+
+</body>
+</html>

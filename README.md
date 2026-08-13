@@ -1,5 +1,7 @@
 # Hearing & Tinnitus Panel 🎧
 
+**[▶ Live demo](https://entertrainment.github.io/hearing-tinnitus-panel/)** · **[Scientific methods](https://entertrainment.github.io/hearing-tinnitus-panel/methods.html)** · [MIT License](LICENSE)
+
 A single-file, offline-capable web app with **two tabs**:
 
 ### 1 · Quick test
